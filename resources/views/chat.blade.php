@@ -3,42 +3,48 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Chat Fatkan</title>
+  <title>Chat</title>
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <style>
     body {
-      font-family: Arial, sans-serif;
-      background: linear-gradient(135deg, #9be15d, #00e3ae);
+      margin: 0;
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background-color: #ece5dd;
       display: flex;
       justify-content: center;
       align-items: center;
       height: 100vh;
-      margin: 0;
     }
     .chat-container {
       background: #fff;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 400px;
-      height: 80vh;
+      width: 95%;
+      max-width: 420px;
+      height: 85vh;
       display: flex;
       flex-direction: column;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      overflow: hidden;
     }
     .chat-header {
-      background: #2408b0;
+      background: #075E54;
       color: white;
-      text-align: center;
       padding: 15px;
-      font-size: 20px;
-      font-weight: bold;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    @keyframes moveText {
-      0% { transform: translateX(0); }
-      100% { transform: translateX(10px); }
+    .chat-header h3 {
+      margin: 0;
+      font-size: 18px;
+    }
+    .status {
+      font-size: 13px;
+      color: #b2dfdb;
     }
     .messages {
       flex: 1;
+      background: #e5ddd5;
       padding: 10px;
       overflow-y: auto;
       display: flex;
@@ -46,57 +52,69 @@
     }
     .message {
       padding: 8px 12px;
-      border-radius: 15px;
+      border-radius: 7px;
       margin-bottom: 10px;
       max-width: 80%;
+      word-wrap: break-word;
+      position: relative;
+      font-size: 15px;
     }
     .sent {
       background: #dcf8c6;
       align-self: flex-end;
+      border-bottom-right-radius: 0;
     }
     .received {
-      background: #f1f0f0;
+      background: #fff;
       align-self: flex-start;
+      border-bottom-left-radius: 0;
     }
     .chat-form {
       display: flex;
+      background: #f0f0f0;
       padding: 10px;
-      border-top: 1px solid #ddd;
+      border-top: 1px solid #ccc;
     }
     input[type="text"] {
       flex: 1;
       padding: 10px;
-      border-radius: 10px;
+      border-radius: 20px;
       border: 1px solid #ccc;
+      outline: none;
     }
     button {
-      background: #0717a6;
+      background: #128C7E;
       color: white;
       border: none;
-      padding: 10px 15px;
-      border-radius: 10px;
-      margin-left: 5px;
+      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      margin-left: 8px;
       cursor: pointer;
+      font-size: 16px;
     }
-    @media (max-width: 600px) {
-      .chat-container {
-        height: 90vh;
-        width: 100%;
-        border-radius: 0;
-      }
+    button:hover {
+      background: #0c6b5c;
     }
   </style>
 </head>
 <body>
 
 <div class="chat-container">
-  <div class="chat-header">Chat Fatai</div>
+  <div class="chat-header">
+    <div>
+      <h3>RARETI</h3>
+      <div class="status">ASHH MUMET</div>
+    </div>
+  </div>
+
   <div class="messages" id="messages"></div>
 
   <form id="chatForm" class="chat-form">
-    <input type="hidden" id="sender" value="Fatkan">
-    <input type="text" id="content" placeholder="Ketik pesan...">
-    <button type="submit">Kirim</button>
+    {{-- Ganti sesuai user login --}}
+    <input type="hidden" id="sender" value="{{ session('sender_name') }}">
+    <input type="text" id="content" placeholder="Ketik pesan..." required>
+    <button type="submit">➤</button>
   </form>
 </div>
 
@@ -106,7 +124,7 @@
       $('#messages').empty();
       messages.forEach(msg => {
         const cls = msg.sender === $('#sender').val() ? 'sent' : 'received';
-        $('#messages').append(`<div class="message ${cls}"><b>${msg.sender}:</b> ${msg.content}</div>`);
+        $('#messages').append(`<div class="message ${cls}">${msg.content}</div>`);
       });
       $('#messages').scrollTop($('#messages')[0].scrollHeight);
     });
@@ -124,15 +142,8 @@
     });
   });
 
-  // Refresh otomatis setiap 2 detik
   setInterval(loadMessages, 2000);
-
-  // Load pertama kali
   loadMessages();
-  <input type="hidden" id="sender" value="{{ session('sender_name') }}">
-  <div class="chat-header">ChatFatai 💬</div>
-
-
 </script>
 
 </body>
